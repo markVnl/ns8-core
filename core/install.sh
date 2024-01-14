@@ -56,7 +56,7 @@ source /etc/os-release
 
 echo "Install dependencies:"
 if [[ "${PLATFORM_ID}" == "platform:el9" ]]; then
-    if [[ "${ID}" == rocky ]]; then
+    if [[ "${ID}" == rocky ]] && [[ $(arch) != aarch64 ]]; then
         print_ns_yum_config > /etc/yum.repos.d/nethserver.repo
         dnf config-manager --save --set-disabled appstream baseos extras
         rpm --import /etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-9
