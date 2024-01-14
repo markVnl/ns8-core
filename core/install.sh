@@ -63,12 +63,18 @@ if [[ "${PLATFORM_ID}" == "platform:el9" ]]; then
     fi
     dnf update -y # Fix SELinux issues with basic packages
     dnf install -y wireguard-tools podman jq openssl firewalld pciutils python3.11
+    if [[ $(arch) == aarch64 ]]; then # just in case pip needs to build something
+        dnf install -y gcc python3.11-devel
+    fi
     systemctl enable --now firewalld
 elif [[ "${ID}" == "debian" && "${VERSION_ID}" == "12" ]]; then
     apt-get update
     apt-get -y install gnupg2
     apt-get update
     apt-get -y install python3-venv podman wireguard uuid-runtime jq openssl psmisc firewalld pciutils wget
+    if [[ $(arch) == aarch64 ]]; then # just in case pip needs to build something
+        apt-get install -y gcc python3-dev
+    fi
 else
     echo "System not supported"
     exit 1
